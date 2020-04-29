@@ -1,0 +1,29 @@
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+})
+
+io.on('connection', (socket) => {
+    console.log('User is online');
+
+    socket.on('disconnect', () => {
+        console.log('User is offline');  
+    })
+
+    socket.on('chat message', (msg,) => {
+        console.log(socket);
+        
+        console.log(('message ' + msg));
+        io.emit('chat message' , msg)
+    })
+})
+
+
+
+http.listen(4000, () => {
+    console.log('listening on port 4000');
+    
+})
